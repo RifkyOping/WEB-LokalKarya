@@ -63,49 +63,6 @@ Pastikan Anda sudah menginstal alat-alat berikut di komputer Anda:
 
 ---
 
-### Langkah-Langkah Pemasangan
-
-#### 1. Klon Repositori
-```bash
-git clone https://github.com/RifkyOping/LOKALKARYA-DIGITALISASI-PEMASARAN-JASA-KREATIF-DAN-PRODUK-MAHASISWA.git
-cd LOKALKARYA-DIGITALISASI-PEMASARAN-JASA-KREATIF-DAN-PRODUK-MAHASISWA
-```
-
-#### 2. Instal Dependensi PHP & JavaScript
-```bash
-composer install
-npm install
-```
-
-#### 3. Salin Konfigurasi Environment
-```bash
-copy .env.example .env
-```
-*Buka berkas `.env` yang baru dibuat dan sesuaikan konfigurasi koneksi database Anda (seperti `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD`).*
-
-#### 4. Buat Application Key
-```bash
-php artisan key:generate
-```
-
-#### 5. Jalankan Migrasi Database
-```bash
-php artisan migrate
-```
-
-#### 6. Buat Tautan Penyimpanan (Storage Symlink)
-```bash
-php artisan storage:link
-```
-
-#### 7. Jalankan Server Pengembangan
-Jalankan perintah di bawah ini untuk memulai server backend Laravel dan Vite secara bersamaan:
-```bash
-npm run dev
-```
-Aplikasi Anda sekarang dapat diakses secara lokal di [http://localhost:8000](http://localhost:8000).
-
----
 
 ## 📂 Struktur Folder Penting
 
