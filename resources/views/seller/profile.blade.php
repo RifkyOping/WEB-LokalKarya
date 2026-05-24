@@ -14,20 +14,30 @@
             <div
                 class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Kreator') }}&background=1f2937&color=fff&size=200"
+                    <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Kreator') . '&background=1f2937&color=fff&size=200' }}"
                         class="w-20 h-20 rounded-[1.25rem] object-cover shadow-sm border-2 border-white">
                     <div>
                         <h3 class="text-2xl font-extrabold text-gray-900">{{ Auth::user()->name ?? 'Kreator' }}</h3>
-                        <p class="text-gray-500 font-medium text-sm">Creative Designer</p>
+                        <p class="text-gray-500 font-medium text-sm">{{ Auth::user()->sellerProfile->bidang_keahlian ?? 'Creative Designer' }}</p>
                     </div>
                 </div>
-                <div
-                    class="w-full md:w-auto bg-gray-50/50 p-2 rounded-xl border border-gray-200 flex items-center justify-between gap-12 sm:min-w-[320px]">
-                    <span class="text-sm text-gray-500 font-medium pl-3">Unggah Foto Profil</span>
-                    <button type="button"
-                        class="bg-white border border-gray-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-5 py-2 rounded-lg text-xs font-bold transition-all shadow-sm">
-                        Pilih file
-                    </button>
+                <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+                    <form action="{{ route('seller.profile.photo') }}" method="POST" enctype="multipart/form-data" class="w-full md:w-auto bg-gray-50/50 p-2 rounded-xl border border-gray-200 flex items-center justify-between gap-12 sm:min-w-[320px]">
+                        @csrf
+                        @method('PATCH')
+                        <span class="text-sm text-gray-500 font-medium pl-3">Unggah Foto Profil</span>
+                        <input type="file" name="foto" id="foto-input" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        <button type="button" onclick="document.getElementById('foto-input').click()"
+                            class="bg-white border border-gray-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-5 py-2 rounded-lg text-xs font-bold transition-all shadow-sm">
+                            Pilih file
+                        </button>
+                    </form>
+                    @error('foto')
+                        <span class="text-red-500 text-xs mt-1 self-start md:self-end">{{ $message }}</span>
+                    @enderror
+                    @if (session('status') === 'photo-updated')
+                        <span class="text-green-600 text-xs font-bold mt-1 self-start md:self-end">Foto berhasil diperbarui!</span>
+                    @endif
                 </div>
             </div>
 
@@ -38,56 +48,146 @@
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
                         @include('profile.partials.update-profile-information-form')
                     </div>
-
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-xl font-extrabold text-gray-900">Skill & Layanan</h2>
-                            <button
-                                class="bg-[#4F46E5] hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-indigo-600/20 transition-all active:scale-95">
-                                + Tambah Skill
-                            </button>
-                        </div>
-                        <div class="flex flex-wrap gap-3">
-                            <span
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-100 text-gray-700 font-bold text-[13px] rounded-xl">
-                                Poster Event <button class="text-gray-400 hover:text-red-500 transition-colors"><svg
-                                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg></button>
-                            </span>
-                            <span
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-100 text-gray-700 font-bold text-[13px] rounded-xl">
-                                UI Design <button class="text-gray-400 hover:text-red-500 transition-colors"><svg
-                                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg></button>
-                            </span>
-                        </div>
+                        <form action="{{ route('seller.profile.details') }}" method="POST" class="space-y-6">
+                            @csrf
+                            @method('PATCH')
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                                    Bidang Keahlian
+                                </label>
+                                <input type="text" name="bidang_keahlian" 
+                                    value="{{ old('bidang_keahlian', Auth::user()->sellerProfile->bidang_keahlian ?? '') }}"
+                                    placeholder="Masukkan bidang keahlian (contoh: Creative Designer)..."
+                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
+                                @error('bidang_keahlian')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                                    Alamat Lengkap
+                                </label>
+                                <textarea name="alamat" rows="2"
+                                    placeholder="Masukkan detail alamat, kota, dan provinsi..."
+                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm resize-none">{{ old('alamat', Auth::user()->sellerProfile->alamat ?? '') }}</textarea>
+                                @error('alamat')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                                    Tentang Saya
+                                </label>
+                                <textarea name="tentang_saya" rows="3"
+                                    placeholder="Ceritakan tentang diri Anda..."
+                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm resize-none">{{ old('tentang_saya', Auth::user()->sellerProfile->deskripsi ?? '') }}</textarea>
+                                @error('tentang_saya')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="flex items-center gap-4 pt-2">
+                                <button type="submit"
+                                    class="bg-[#4F46E5] hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-indigo-600/20 transition-all hover:-translate-y-0.5 active:scale-95">
+                                    Simpan
+                                </button>
+                                @if (session('status') === 'details-updated')
+                                    <span class="text-sm text-green-600 font-medium ml-4">Tersimpan!</span>
+                                @endif
+                            </div>
+                        </form>
                     </div>
 
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-xl font-extrabold text-gray-900">Portfolio</h2>
-                            <button
-                                class="bg-[#4F46E5] hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-indigo-600/20 transition-all active:scale-95">
-                                + Upload Karya
-                            </button>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                            <div>
+                                <h2 class="text-xl font-extrabold text-gray-900">Portfolio / Link Karya</h2>
+                                <p class="text-xs text-gray-500 font-medium mt-1">Tambahkan tautan menuju karya atau
+                                    project yang pernah kamu buat.</p>
+                            </div>
+                            @if (session('status') === 'portfolio-added')
+                                <span class="text-sm text-green-600 font-medium">Link berhasil ditambahkan!</span>
+                            @elseif (session('status') === 'portfolio-deleted')
+                                <span class="text-sm text-red-600 font-medium">Link berhasil dihapus!</span>
+                            @endif
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Portfolio+1"
-                                class="w-full h-40 object-cover rounded-2xl border border-gray-100 shadow-sm cursor-pointer">
-                            <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Portfolio+2"
-                                class="w-full h-40 object-cover rounded-2xl border border-gray-100 shadow-sm cursor-pointer">
-                            <button
-                                class="w-full h-40 flex flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-2xl text-gray-500 hover:text-[#4F46E5] hover:border-[#4F46E5] hover:bg-indigo-50/50 transition-all">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                <span class="font-bold text-sm">Upload Portfolio</span>
+
+                        <form action="{{ route('seller.portfolio.add') }}" method="POST"
+                            class="mb-8 flex flex-col sm:flex-row gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                            @csrf
+                            <div class="flex-1 flex flex-col">
+                                <input type="text" name="judul_karya" value="{{ old('judul_karya') }}" placeholder="Judul Karya (Misal: Dribbble, GDrive)"
+                                    class="w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
+                                @error('judul_karya')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="flex-1 flex flex-col">
+                                <input type="url" name="link_karya" value="{{ old('link_karya') }}" placeholder="https://..."
+                                    class="w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
+                                @error('link_karya')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <button type="submit"
+                                class="bg-[#4F46E5] hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-indigo-600/20 transition-all active:scale-95 whitespace-nowrap self-start sm:self-center">
+                                + Tambah Link
                             </button>
+                        </form>
+
+                        <div class="space-y-3">
+
+                            @php
+                                $portfolios = Auth::user()->sellerProfile->link_portofolio ?? [];
+                            @endphp
+
+                            @if (count($portfolios) > 0)
+                                @foreach ($portfolios as $index => $item)
+                                    <div
+                                        class="flex items-center justify-between p-4 rounded-2xl border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50/30 transition-all group">
+                                        <div class="flex items-center gap-4 overflow-hidden">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 00-5.656 0l-4 4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div class="truncate">
+                                                <h4 class="text-sm font-bold text-gray-900 truncate">{{ $item['judul'] ?? 'Link Karya' }}</h4>
+                                                <a href="{{ $item['link'] ?? '#' }}" target="_blank"
+                                                    class="text-xs font-medium text-blue-600 hover:underline truncate block">{{ $item['link'] ?? '#' }}</a>
+                                            </div>
+                                        </div>
+
+                                        <form action="{{ route('seller.portfolio.delete', $index) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="text-gray-400 hover:text-red-500 transition-colors p-2 shrink-0 opacity-0 group-hover:opacity-100">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="text-center py-6 text-gray-400 font-medium text-sm border-2 border-dashed border-gray-150 rounded-2xl">
+                                    Belum ada link portfolio yang ditambahkan.
+                                </div>
+                            @endif
+
                         </div>
                     </div>
 
@@ -105,29 +205,37 @@
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] sticky top-28">
                         <h2 class="text-xl font-extrabold text-gray-900 mb-6">Kontak</h2>
 
-                        <div class="space-y-6">
+                        <form action="{{ route('seller.whatsapp.update') }}" method="POST" class="space-y-6">
+                            @csrf
+                            @method('PATCH')
+
                             <div>
                                 <label
                                     class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp</label>
-                                <input type="text" value="+62 812 3456 7890"
-                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-gray-900 font-medium">
-                            </div>
 
-                            <div>
-                                <label
-                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Instagram</label>
-                                <input type="text" value="@rizkycreative"
+                                <input type="text" name="nomor_whatsapp"
+                                    value="{{ old('nomor_whatsapp', Auth::user()->sellerProfile->nomor_whatsapp ?? '') }}"
+                                    placeholder="contoh : 081234567890"
                                     class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-gray-900 font-medium">
+
+                                @error('nomor_whatsapp')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="flex justify-center pt-2">
-                                <button
+                                <button type="submit"
                                     class="bg-[#4F46E5] hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-indigo-600/20 transition-all hover:-translate-y-0.5 active:scale-95 whitespace-nowrap">
-                                    Simpan Perubahan
+                                    Simpan
                                 </button>
+                                @if (session('status') === 'whatsapp-updated')
+                                <span class="text-sm text-green-600 text-center font-medium mt-2 ml-6">Tersimpan!</span>
+                            @endif
                             </div>
 
-                        </div>
+                            
+                        </form>
+
                     </div>
                 </div>
 

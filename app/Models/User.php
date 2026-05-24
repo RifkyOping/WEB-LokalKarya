@@ -29,4 +29,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Di dalam App\Models\User.php
+    public function sellerProfile()
+    {
+        return $this->hasOne(SellerProfile::class);
+    }
 }

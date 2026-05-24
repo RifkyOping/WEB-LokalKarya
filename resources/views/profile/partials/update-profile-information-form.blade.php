@@ -12,7 +12,9 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
+    <form method="post" 
+          action="{{ auth()->user()->role == 'admin' ? route('profile.update') : route('update.seller') }}" 
+          class="space-y-6">
         @csrf
         @method('patch')
 
@@ -25,22 +27,8 @@
                     :value="old('name', $user->name)" required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
-            @if (auth()->user()->role == 'seller')
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bidang
-                        Keahlian</label>
-                    <input type="text" value="Creative Designer"
-                        class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                </div>
-
         </div>
 
-        <div>
-            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Tentang Saya</label>
-            <textarea rows="3"
-                class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">Membantu kebutuhan publikasi seminar, webinar, organisasi, dan event kampus agar tampil lebih modern dan profesional.</textarea>
-        </div>
-        @endif
         <div>
             <x-input-label for="email" :value="__('Email')"
                 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2" />
@@ -72,7 +60,7 @@
         <div class="flex items-center gap-4 pt-2">
             <button
                 class="bg-[#4F46E5] hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-indigo-600/20 transition-all hover:-translate-y-0.5 active:scale-95">
-                {{ __('Simpan Data') }}
+                {{ __('Simpan') }}
             </button>
 
             @if (session('status') === 'profile-updated')

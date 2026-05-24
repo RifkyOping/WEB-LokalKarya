@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\SellerProfile;
 
 class SellerProfileController extends Controller
 {
@@ -56,5 +57,104 @@ class SellerProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function updateWhatsapp(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'nomor_whatsapp' => ['required', 'string', 'max:15'],
+        ]);
+
+        $user = $request->user();
+
+        SellerProfile::updateOrCreate(
+            ['user_id' => $user->id], 
+            [
+                'nomor_whatsapp' => $request->nomor_whatsapp
+            ]
+        );
+
+        return Redirect::route('profile.seller')->with('status', 'whatsapp-updated');
+    }
+
+    public function updateDetails(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'bidang_keahlian' => ['nullable', 'string', 'max:255'],
+            'alamat' => ['nullable', 'string'],
+            'tentang_saya' => ['nullable', 'string'],
+        ]);
+
+        $user = $request->user();
+
+        SellerProfile::updateOrCreate(
+            ['user_id' => $user->id], 
+            [
+                'bidang_keahlian' => $request->bidang_keahlian,
+                'alamat' => $request->alamat,
+                'deskripsi' => $request->tentang_saya
+            ]
+        );
+
+        return Redirect::route('profile.seller')->with('status', 'details-updated');
+    }
+
+    public function updatePhoto(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'foto' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $user = $request->user();
+        $profile = SellerProfile::firstOrCreate(['user_id' => $user->id]);
+
+        if ($request->hasFile('foto')) {
+            if ($profile->foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($profile->foto)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($profile->foto);
+            }
+
+            $path = $request->file('foto')->store('profiles', 'public');
+            $profile->foto = $path;
+            $profile->save();
+        }
+
+        return Redirect::route('profile.seller')->with('status', 'photo-updated');
+    }
+
+    public function addPortfolio(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'judul_karya' => ['required', 'string', 'max:255'],
+            'link_karya' => ['required', 'url', 'max:2048'],
+        ]);
+
+        $user = $request->user();
+        $profile = SellerProfile::firstOrCreate(['user_id' => $user->id]);
+
+        $portfolio = $profile->link_portofolio ?? [];
+        $portfolio[] = [
+            'judul' => $request->judul_karya,
+            'link' => $request->link_karya,
+        ];
+
+        $profile->link_portofolio = $portfolio;
+        $profile->save();
+
+        return Redirect::route('profile.seller')->with('status', 'portfolio-added');
+    }
+
+    public function deletePortfolio(Request $request, $index): RedirectResponse
+    {
+        $user = $request->user();
+        $profile = $user->sellerProfile;
+
+        if ($profile && isset($profile->link_portofolio[$index])) {
+            $portfolio = $profile->link_portofolio;
+            unset($portfolio[$index]);
+            $profile->link_portofolio = array_values($portfolio);
+            $profile->save();
+        }
+
+        return Redirect::route('profile.seller')->with('status', 'portfolio-deleted');
     }
 }

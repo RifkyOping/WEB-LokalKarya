@@ -24,7 +24,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('seller.dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,6 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/seller/profil', [SellerProfileController::class, 'edit'])->name('profile.seller');
     Route::patch('/seller/profil', [SellerProfileController::class, 'update'])->name('update.seller');
     Route::delete('/seller/profile', [SellerProfileController::class, 'destroy'])->name('destroy.seller');
+    Route::patch('/seller/profile', [SellerProfileController::class, 'updateWhatsapp'])->name('seller.whatsapp.update');
+    Route::patch('/seller/profile/details', [SellerProfileController::class, 'updateDetails'])->name('seller.profile.details');
+    Route::patch('/seller/profile/photo', [SellerProfileController::class, 'updatePhoto'])->name('seller.profile.photo');
+    Route::post('/seller/profile/portfolio', [SellerProfileController::class, 'addPortfolio'])->name('seller.portfolio.add');
+    Route::delete('/seller/profile/portfolio/{index}', [SellerProfileController::class, 'deletePortfolio'])->name('seller.portfolio.delete');
 
     Route::get('/seller/create', [SellerController::class, 'create'])->name('seller.create');
 

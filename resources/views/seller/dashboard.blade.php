@@ -32,7 +32,7 @@
                     <div
                         class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-xl shadow-gray-200/40 relative mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left w-full">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Seller') }}&background=2563eb&color=fff&size=200"
+                            <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Seller') . '&background=2563eb&color=fff&size=200' }}"
                                 class="w-24 h-24 rounded-[32px] shadow-xl shadow-blue-600/10 border-4 border-white object-cover">
 
                             <div class="flex-1">
@@ -41,10 +41,9 @@
                                         {{ Auth::user()->name ?? 'Seller' }}
                                     </h3>
                                 </div>
-                                <p class="text-gray-500 font-medium text-sm">Creative Designer</p>
+                                <p class="text-gray-500 font-medium text-sm">{{ Auth::user()->sellerProfile->bidang_keahlian ?? 'Creative Designer' }}</p>
                                 <p class="text-gray-900 font-bold text-sm mt-2 max-w-2xl">
-                                    Membantu kebutuhan publikasi seminar, webinar, organisasi, dan event kampus agar
-                                    tampil modern.
+                                    {{ Auth::user()->sellerProfile->deskripsi ?? 'Membantu kebutuhan publikasi seminar, webinar, organisasi, dan event kampus agar tampil modern.' }}
                                 </p>
                             </div>
                         </div>

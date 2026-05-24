@@ -1,10 +1,31 @@
 <?php
 
-namespace App\Models;
+    namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class SellerProfile extends Model
 {
-    protected $fillable = ['alamat', 'foto', 'link_portofolio', 'nomor_whatsapp', 'deskripsi'];
+    // Tambahkan 'user_id' di dalam array ini
+    protected $fillable = [
+        'user_id', 
+        'alamat', 
+        'foto', 
+        'link_portofolio', 
+        'nomor_whatsapp', 
+        'deskripsi',
+        'bidang_keahlian'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'link_portofolio' => 'array',
+        ];
+    }
 }
