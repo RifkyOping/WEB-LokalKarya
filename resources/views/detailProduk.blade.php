@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Desain Poster Event Kampus Modern & Profesional - Katalog Jasa</title>
+    <title>{{ $produk->nama_produk }} - Katalog Jasa LOKALKARYA</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -51,79 +51,30 @@
                     <div class="space-y-4">
                         <div
                             class="w-full h-[500px] md:h-[600px] rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm bg-white">
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                                alt="Main Preview" class="w-full h-full object-cover">
+                            <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}"
+                                alt="{{ $produk->nama_produk }}" class="w-full h-full object-cover">
                         </div>
                     </div>
 
                     <div class="p-8 md:p-10 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
                         <span
                             class="inline-flex items-center justify-center px-4 py-1.5 bg-indigo-50 text-indigo-600 font-bold text-xs rounded-full mb-4">
-                            Desain Publikasi
+                            {{ $produk->kategori }}
                         </span>
 
                         <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
-                            Desain Poster Event Kampus Modern & Profesional
+                            {{ $produk->nama_produk }}
                         </h1>
-                        <p class="text-gray-500 font-medium text-base mb-8">
-                            Cocok untuk seminar, lomba, webinar, organisasi kampus, publikasi acara, dan kebutuhan media
-                            sosial kampus.
-                        </p>
-
-                        <div class="mb-10">
+                        
+                        <div class="mb-10 mt-6">
                             <p class="text-sm text-gray-500 font-bold mb-1">Harga mulai dari</p>
-                            <h2 class="text-5xl font-extrabold text-[#4F46E5]">Rp75K</h2>
+                            <h2 class="text-5xl font-extrabold text-[#4F46E5]">Rp{{ number_format($produk->harga, 0, ',', '.') }}</h2>
                         </div>
 
                         <div>
                             <h3 class="text-lg font-extrabold text-gray-900 mb-4">Deskripsi</h3>
-                            <div class="prose prose-sm text-gray-600 font-medium space-y-4">
-                                <p>Jasa desain publikasi modern untuk kebutuhan kegiatan di lingkungan kampus dengan
-                                    visual clean, menarik, dan mudah dipahami.</p>
-                                <p>Bisa digunakan untuk:</p>
-
-                                <ul class="space-y-3 mt-4">
-                                    <li class="flex items-center gap-3">
-                                        <svg class="w-5 h-5 text-gray-900 shrink-0" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        Poster seminar & webinar
-                                    </li>
-                                    <li class="flex items-center gap-3">
-                                        <svg class="w-5 h-5 text-gray-900 shrink-0" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        Publikasi lomba
-                                    </li>
-                                    <li class="flex items-center gap-3">
-                                        <svg class="w-5 h-5 text-gray-900 shrink-0" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        Feed Instagram organisasi
-                                    </li>
-                                    <li class="flex items-center gap-3">
-                                        <svg class="w-5 h-5 text-gray-900 shrink-0" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        Banner & media event
-                                    </li>
-                                    <li class="flex items-center gap-3">
-                                        <svg class="w-5 h-5 text-gray-900 shrink-0" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        Desain kebutuhan UKM kampus
-                                    </li>
-                                </ul>
+                            <div class="prose prose-sm text-gray-600 font-medium space-y-4 whitespace-pre-line">
+                                {{ $produk->deskripsi }}
                             </div>
                         </div>
                     </div>
@@ -168,57 +119,44 @@
                     <div class="p-6 bg-white shadow-sm border border-gray-100 rounded-[2rem] sticky top-8">
 
                         <div class="flex items-center gap-4 mb-6">
-                            <img src="https://ui-avatars.com/api/?name=Rizky+Creative&background=1f2937&color=fff"
+                            <img src="{{ $produk->user->sellerProfile && $produk->user->sellerProfile->foto ? asset('storage/' . $produk->user->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode($produk->user->name) . '&background=1f2937&color=fff' }}"
                                 alt="Avatar"
                                 class="w-14 h-14 rounded-full object-cover border border-gray-100 shadow-sm">
                             <div>
                                 <div class="flex items-center gap-1.5">
-                                    <h3 class="font-extrabold text-gray-900 text-base">Rizky Creative</h3>
+                                    <h3 class="font-extrabold text-gray-900 text-base">{{ $produk->user->name }}</h3>
+                                    @if($produk->user->sellerProfile && $produk->user->sellerProfile->status_verifikasi == 'diterima')
                                     <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd"></path>
                                     </svg>
+                                    @endif
                                 </div>
-                                <p class="text-xs text-gray-500 font-medium">Creative Designer</p>
+                                <p class="text-xs text-gray-500 font-medium">{{ $produk->user->sellerProfile->bidang_keahlian ?? 'Seller' }}</p>
                             </div>
                         </div>
 
+                        @if($produk->user->sellerProfile && $produk->user->sellerProfile->deskripsi)
                         <div
                             class="bg-indigo-50/50 text-indigo-700 p-4 rounded-xl text-sm font-medium mb-6 leading-relaxed">
-                            Membantu kebutuhan publikasi acara kampus agar terlihat lebih modern dan profesional.
+                            {{ $produk->user->sellerProfile->deskripsi }}
                         </div>
+                        @endif
 
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span
-                                class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">Poster
-                                Event</span>
-                            <span
-                                class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">Feed
-                                Instagram</span>
-                            <span
-                                class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">Banner</span>
-                            <span
-                                class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">Publikasi</span>
+                            <span class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">{{ $produk->kategori }}</span>
                         </div>
 
-                        <ul class="space-y-2.5 text-xs text-gray-500 font-medium mb-8">
+                        {{-- <ul class="space-y-2.5 text-xs text-gray-500 font-medium mb-8">
                             <li class="flex items-center gap-2">
-                                <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
-                                Fast respons untuk kebutuhan event kampus
+                                <div class="w-1.5 h-1.5 rounded-full {{ ($produk->user->sellerProfile && $produk->user->sellerProfile->status_terima_order) ? 'bg-green-500' : 'bg-gray-300' }}"></div>
+                                {{ ($produk->user->sellerProfile && $produk->user->sellerProfile->status_terima_order) ? 'Sedang menerima project' : 'Status order tidak diketahui' }}
                             </li>
-                            <li class="flex items-center gap-2">
-                                <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
-                                Sedang menerima project
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
-                                Bisa menyesuaikan konsep acara
-                            </li>
-                        </ul>
+                        </ul> --}}
 
                         <div class="space-y-3">
-                            <a href="https://wa.me/6281234567890" target="_blank"
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $produk->user->sellerProfile->nomor_whatsapp ?? '') }}?text=Halo%20{{ urlencode($produk->user->name) }},%20saya%20tertarik%20dengan%20jasa/produk%20{{ urlencode($produk->nama_produk) }}%20di%20LOKALKARYA." target="_blank"
                                 class="w-full flex items-center justify-center gap-2 bg-white hover:bg-green-600 hover:text-white text-black px-6 py-3.5 rounded-xl font-bold text-sm shadow-md shadow-gray-200/50 transition-all hover:-translate-y-0.5 active:scale-95 border border-gray-100">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16">
                                     <path
@@ -226,13 +164,7 @@
                                 </svg>
                                 Diskusikan via WhatsApp
                             </a>
-
-                            <a href="#" target="_blank"
-                                class="w-full flex items-center justify-center gap-2 bg-white text-black px-6 py-3.5 rounded-xl font-bold text-sm shadow-md shadow-gray-200/50 transition-all hover:-translate-y-0.5 active:scale-95 border border-gray-100">
-                                Lihat Profil Seller
-                            </a>
                         </div>
-
                     </div>
                 </div>
 

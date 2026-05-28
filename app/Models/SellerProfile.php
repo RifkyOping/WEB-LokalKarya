@@ -14,7 +14,8 @@ class SellerProfile extends Model
         'link_portofolio', 
         'nomor_whatsapp', 
         'deskripsi',
-        'bidang_keahlian'
+        'bidang_keahlian',
+        'status_verifikasi'
     ];
 
     public function user()

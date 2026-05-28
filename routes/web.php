@@ -5,20 +5,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SellerProfileController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
+Route::get('/jasa/{id}', [WelcomeController::class, 'show'])->name('produk.detail');
 
 Route::get('/dashboard', function () {
     $role = Auth::user()->role;
 
     if ($role === 'admin') {
-        return view('admin.dashboard');
+        return redirect()->route('admin.dashboard');
     } elseif ($role === 'seller') {
-        return view('seller.dashboard');
+        return redirect()->route('seller.dashboard');
     }
     return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -32,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/seller/produk', [ProdukController::class, 'index'])->name('produk.seller');
+    Route::get('/seller/produk/create', [ProdukController::class, 'create'])->name('seller.create');
+    Route::post('/seller/produk', [ProdukController::class, 'store'])->name('seller.store');
+    Route::get('/seller/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('seller.edit');
+    Route::put('/seller/produk/{produk}', [ProdukController::class, 'update'])->name('seller.update');
 
     Route::get('/seller/profil', [SellerProfileController::class, 'edit'])->name('profile.seller');
     Route::patch('/seller/profil', [SellerProfileController::class, 'update'])->name('update.seller');
@@ -42,10 +46,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/seller/profile/portfolio', [SellerProfileController::class, 'addPortfolio'])->name('seller.portfolio.add');
     Route::delete('/seller/profile/portfolio/{index}', [SellerProfileController::class, 'deletePortfolio'])->name('seller.portfolio.delete');
 
-    Route::get('/seller/create', [SellerController::class, 'create'])->name('seller.create');
+    // Route::get('/seller/create', [SellerController::class, 'create'])->name('seller.create');
+    // Route::post('/seller/create', [SellerController::class, 'store'])->name('seller.store');
 
     Route::get('/admin/seller', [AdminController::class, 'seller'])->name('admin.seller');
     Route::get('/admin/produk', [AdminController::class, 'produk'])->name('admin.produk');
+    Route::patch('/admin/seller/{sellerProfile}/setujui', [AdminController::class, 'setujuiSeller'])->name('admin.seller.setujui');
+    Route::patch('/admin/seller/{sellerProfile}/tolak', [AdminController::class, 'tolakSeller'])->name('admin.seller.tolak');
+    Route::patch('/admin/produk/{produk}/setujui', [AdminController::class, 'setujuiProduk'])->name('admin.produk.setujui');
+    Route::patch('/admin/produk/{produk}/tolak', [AdminController::class, 'tolakProduk'])->name('admin.produk.tolak');
+    Route::delete('/admin/produk/{produk}', [AdminController::class, 'destroyProduk'])->name('admin.produk.destroy');
 
 });
 

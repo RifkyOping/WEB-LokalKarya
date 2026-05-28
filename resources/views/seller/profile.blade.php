@@ -17,8 +17,17 @@
                     <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Kreator') . '&background=1f2937&color=fff&size=200' }}"
                         class="w-20 h-20 rounded-[1.25rem] object-cover shadow-sm border-2 border-white">
                     <div>
-                        <h3 class="text-2xl font-extrabold text-gray-900">{{ Auth::user()->name ?? 'Kreator' }}</h3>
-                        <p class="text-gray-500 font-medium text-sm">{{ Auth::user()->sellerProfile->bidang_keahlian ?? 'Creative Designer' }}</p>
+                        <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-1.5">
+                            {{ Auth::user()->name ?? 'Seller' }}
+                            @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->status_verifikasi == 'diterima')
+                            <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            @endif
+                        </h3>
+                        <p class="text-gray-500 font-medium text-sm">{{ Auth::user()->sellerProfile->bidang_keahlian ?? '' }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col items-end gap-2 w-full md:w-auto">
@@ -57,7 +66,7 @@
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                                     Bidang Keahlian
                                 </label>
-                                <input type="text" name="bidang_keahlian" 
+                                <input type="text" name="bidang_keahlian"
                                     value="{{ old('bidang_keahlian', Auth::user()->sellerProfile->bidang_keahlian ?? '') }}"
                                     placeholder="Masukkan bidang keahlian (contoh: Creative Designer)..."
                                     class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
@@ -233,7 +242,7 @@
                             @endif
                             </div>
 
-                            
+
                         </form>
 
                     </div>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seller;
+use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
@@ -12,24 +14,15 @@ class SellerController extends Controller
      */
     public function index()
     {
-        return view("seller.dashboard");
+        $produks = Produk::where('user_id', Auth::id())
+            ->where('status_verifikasi', 'diterima')
+            ->where('status', 'aktif')
+            ->get();
+
+        return view("seller.dashboard", compact('produks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view("seller.create");
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.

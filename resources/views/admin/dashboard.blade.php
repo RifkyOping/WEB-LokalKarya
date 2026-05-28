@@ -38,12 +38,12 @@
 
                         <div class="bg-white px-8 py-6 rounded-[1.5rem] border border-gray-100 shadow-sm">
                             <h3 class="text-xs font-bold text-gray-400 mb-2">Menunggu Verifikasi Akun</h3>
-                            <p class="text-4xl font-extrabold text-[#0f172a]">24</p>
+                            <p class="text-4xl font-extrabold text-[#0f172a]">{{ $pendingSeller }}</p>
                         </div>
 
                         <div class="bg-white px-8 py-6 rounded-[1.5rem] border border-gray-100 shadow-sm">
-                            <h3 class="text-xs font-bold text-gray-400 mb-2">Menunggu Verifikasi Jasa /Produk</h3>
-                            <p class="text-4xl font-extrabold text-[#0f172a]">30</p>
+                            <h3 class="text-xs font-bold text-gray-400 mb-2">Menunggu Verifikasi Jasa / Produk</h3>
+                            <p class="text-4xl font-extrabold text-[#0f172a]">{{ $pendingProduk }}</p>
                         </div>
                     </div>
 
@@ -51,35 +51,20 @@
                         <h2 class="text-xl font-extrabold text-gray-900 mb-6">Aktivitas Terbaru</h2>
 
                         <div class="space-y-4">
+                            @forelse($recentActivities as $activity)
                             <div
                                 class="bg-white border border-gray-100 p-5 rounded-2xl flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 shadow-sm">
                                 <div>
-                                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">Pengguna Baru Mendaftar</h4>
-                                    <p class="text-sm text-gray-500 font-medium">Rizky Creative mengajukan akun kreator
-                                        baru.</p>
+                                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">{{ $activity['judul'] }}</h4>
+                                    <p class="text-sm text-gray-500 font-medium">{{ $activity['deskripsi'] }}</p>
                                 </div>
-                                <span class="text-xs font-bold text-gray-400 whitespace-nowrap">5 menit lalu</span>
+                                <span class="text-xs font-bold text-gray-400 whitespace-nowrap">{{ $activity['waktu'] ? $activity['waktu']->diffForHumans() : '-' }}</span>
                             </div>
-
-                            <div
-                                class="bg-white border border-gray-100 p-5 rounded-2xl flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 shadow-sm">
-                                <div>
-                                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">Jasa Baru Ditambahkan</h4>
-                                    <p class="text-sm text-gray-500 font-medium">Poster Seminar Nasional menunggu
-                                        verifikasi admin.</p>
-                                </div>
-                                <span class="text-xs font-bold text-gray-400 whitespace-nowrap">12 menit lalu</span>
+                            @empty
+                            <div class="bg-white border border-gray-100 p-8 rounded-2xl text-center text-gray-400 shadow-sm">
+                                <p class="text-sm font-medium">Belum ada aktivitas terbaru.</p>
                             </div>
-
-                            <div
-                                class="bg-white border border-gray-100 p-5 rounded-2xl flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 shadow-sm">
-                                <div>
-                                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">Verifikasi Menunggu</h4>
-                                    <p class="text-sm text-gray-500 font-medium">3 jasa baru memerlukan persetujuan
-                                        admin.</p>
-                                </div>
-                                <span class="text-xs font-bold text-gray-400 whitespace-nowrap">25 menit lalu</span>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
 
