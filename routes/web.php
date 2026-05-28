@@ -23,13 +23,9 @@ Route::get('/dashboard', function () {
     return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+// ─── Routes untuk Seller ─────────────────────────────────────────────
+Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('seller.dashboard');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/seller/produk', [ProdukController::class, 'index'])->name('produk.seller');
     Route::get('/seller/produk/create', [ProdukController::class, 'create'])->name('seller.create');
@@ -45,10 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/seller/profile/photo', [SellerProfileController::class, 'updatePhoto'])->name('seller.profile.photo');
     Route::post('/seller/profile/portfolio', [SellerProfileController::class, 'addPortfolio'])->name('seller.portfolio.add');
     Route::delete('/seller/profile/portfolio/{index}', [SellerProfileController::class, 'deletePortfolio'])->name('seller.portfolio.delete');
+});
 
-    // Route::get('/seller/create', [SellerController::class, 'create'])->name('seller.create');
-    // Route::post('/seller/create', [SellerController::class, 'store'])->name('seller.store');
-
+// ─── Routes untuk Admin ──────────────────────────────────────────────
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/seller', [AdminController::class, 'seller'])->name('admin.seller');
     Route::get('/admin/produk', [AdminController::class, 'produk'])->name('admin.produk');
     Route::patch('/admin/seller/{sellerProfile}/setujui', [AdminController::class, 'setujuiSeller'])->name('admin.seller.setujui');
@@ -56,9 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/produk/{produk}/setujui', [AdminController::class, 'setujuiProduk'])->name('admin.produk.setujui');
     Route::patch('/admin/produk/{produk}/tolak', [AdminController::class, 'tolakProduk'])->name('admin.produk.tolak');
     Route::delete('/admin/produk/{produk}', [AdminController::class, 'destroyProduk'])->name('admin.produk.destroy');
-
 });
 
-Route::get('/seller/show', [SellerController::class, 'show'])->name('seller.show');
+// ─── Routes umum (auth tanpa role tertentu) ──────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 require __DIR__.'/auth.php';

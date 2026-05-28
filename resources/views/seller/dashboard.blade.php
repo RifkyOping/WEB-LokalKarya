@@ -64,8 +64,8 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @forelse($produks as $produk)
-                        <div
-                            class="bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden flex flex-col group hover:border-[#4F46E5]/30 transition-all">
+                        <a href="{{ route('produk.detail', $produk->id) }}"
+                            class="block bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden flex flex-col group hover:border-[#4F46E5]/30 transition-all">
                             <div class="h-56 overflow-hidden">
                                 <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image' }}"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -91,7 +91,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         @empty
                         <div class="col-span-full py-12 text-center text-gray-400 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
                             <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
