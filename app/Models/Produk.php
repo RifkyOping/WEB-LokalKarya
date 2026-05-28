@@ -6,16 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Produk extends Model
 {
+    // Hanya field yang BOLEH diisi oleh Seller melalui form
     protected $fillable = [
-        'user_id',
         'nama_produk',
         'gambar_produk',
         'harga',
         'deskripsi',
         'kategori',
         'status',
-        'status_verifikasi',
     ];
+
+    // Field sensitif yang TIDAK BOLEH diubah oleh Seller via mass assignment
+    // user_id & status_verifikasi harus di-set secara eksplisit di Controller
+
 
     public function user()
     {

@@ -145,20 +145,19 @@
                             </div>
                         </div>
                     @empty
-                            <div
-                                class="bg-white border border-gray-100 p-8 rounded-[2rem] text-center text-gray-400 shadow-sm">
-                                <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                </svg>
-                                <p class="font-semibold text-gray-500 text-sm">Tidak ada jasa atau produk</p>
-                                <p class="text-xs text-gray-400 mt-1">Produk baru yang diajukan oleh seller akan muncul di
-                                    sini.</p>
-                            </div>
-                        @endforelse
+                        <div class="bg-white border border-gray-100 p-8 rounded-[2rem] text-center text-gray-400 shadow-sm">
+                            <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            <p class="font-semibold text-gray-500 text-sm">Tidak ada jasa atau produk</p>
+                            <p class="text-xs text-gray-400 mt-1">Produk baru yang diajukan oleh seller akan muncul di
+                                sini.</p>
+                        </div>
+                    @endforelse
 
-                    </div>
+                </div>
             </main>
 
         </div>
