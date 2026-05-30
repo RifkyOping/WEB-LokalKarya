@@ -17,4 +17,4 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })->create()->useStoragePath(is_dir('/tmp') ? '/tmp' : storage_path());
