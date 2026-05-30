@@ -11,24 +11,34 @@
 </head>
 
 <body class="bg-gray-50 font-sans antialiased text-gray-900">
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen" x-data="{ sidebarOpen: false }">
 
         @include('layouts.navigation')
 
-        <div class="flex-1 flex flex-col min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-            <header class="bg-white border-b border-gray-100 sticky top-0 z-20 shadow-sm">
-                <div class="max-w-6xl mx-auto px-8 py-5">
-                    <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">
-                        Halo Admin 👋
-                    </h2>
-                    <p class="text-gray-500 mt-1 font-medium">Pantau performa toko, pesanan, dan produk Anda di sini.
-                    </p>
+            <!-- Mobile top bar -->
+            <div class="lg:hidden bg-white border-b border-gray-100 flex items-center justify-between px-4 py-3 sticky top-0 z-30 shadow-sm">
+                <a href="{{ url('/') }}" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-base">L</div>
+                    <span class="font-extrabold text-base tracking-tight uppercase">Lokalkarya</span>
+                </a>
+                <button @click="sidebarOpen = true" class="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <header class="bg-white border-b border-gray-100 z-20">
+                <div class="max-w-5xl mx-auto px-4 sm:px-8 py-4 sm:py-5">
+                    <h2 class="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">Halo Admin 👋</h2>
+                    <p class="text-gray-500 text-xs mt-0.5">Pantau performa platform LOKALKARYA.</p>
                 </div>
             </header>
 
             <main class="flex-1 overflow-y-auto">
-                <div class="max-w-6xl mx-auto px-8 py-8 space-y-10">
+                <div class="max-w-5xl mx-auto px-4 sm:px-8 py-6 pb-28 lg:pb-10 space-y-6">
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-white px-8 py-6 rounded-[1.5rem] border border-gray-100 shadow-sm">

@@ -50,7 +50,7 @@
 
                     <div class="space-y-4">
                         <div
-                            class="w-full h-[500px] md:h-[600px] rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm bg-white">
+                            class="w-full h-[260px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm bg-white">
                             <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}"
                                 alt="{{ $produk->nama_produk }}" class="w-full h-full object-cover">
                         </div>
@@ -62,13 +62,13 @@
                             {{ $produk->kategori }}
                         </span>
 
-                        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
                             {{ $produk->nama_produk }}
                         </h1>
                         
-                        <div class="mb-10 mt-6">
+                        <div class="mb-8 mt-6">
                             <p class="text-sm text-gray-500 font-bold mb-1">Harga mulai dari</p>
-                            <h2 class="text-5xl font-extrabold text-[#4F46E5]">Rp{{ number_format($produk->harga, 0, ',', '.') }}</h2>
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#4F46E5]">Rp{{ number_format($produk->harga, 0, ',', '.') }}</h2>
                         </div>
 
                         <div>
@@ -116,7 +116,7 @@
 
                 <div class="lg:col-span-1">
 
-                    <div class="p-6 bg-white shadow-sm border border-gray-100 rounded-[2rem] sticky top-8">
+                    <div class="p-5 sm:p-6 bg-white shadow-sm border border-gray-100 rounded-[1.5rem] sm:rounded-[2rem] lg:sticky lg:top-8">
 
                         <div class="flex items-center gap-4 mb-6">
                             <img src="{{ $produk->user->sellerProfile && $produk->user->sellerProfile->foto ? asset('storage/' . $produk->user->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode($produk->user->name) . '&background=1f2937&color=fff' }}"
