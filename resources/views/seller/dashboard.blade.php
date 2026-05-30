@@ -11,84 +11,80 @@
 </head>
 
 <body class="bg-gray-50 font-sans antialiased text-gray-900">
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen" x-data="{ sidebarOpen: false }">
 
         @include('layouts.navigation')
 
-        <div class="flex-1 flex flex-col min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-            <header class="bg-white border-b border-gray-100 sticky top-0 z-20 shadow-sm">
-                <div class="max-w-6xl mx-auto px-8 py-5">
-                    <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">
-                        Halo Seller 👋
-                    </h2>
-                    <p class="text-gray-500 mt-1 font-medium">Pantau performa toko, pesanan, dan produk Anda di sini.
-                    </p>
+            <!-- Mobile top bar -->
+            <div class="lg:hidden bg-white border-b border-gray-100 flex items-center justify-between px-4 py-3 sticky top-0 z-30 shadow-sm">
+                <a href="{{ url('/') }}" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-base">L</div>
+                    <span class="font-extrabold text-base tracking-tight uppercase">Lokalkarya</span>
+                </a>
+                <button @click="sidebarOpen = true" class="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <header class="bg-white border-b border-gray-100 z-20">
+                <div class="max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-5">
+                    <h2 class="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">Halo Seller 👋</h2>
+                    <p class="text-gray-500 mt-0.5 text-xs sm:text-sm">Pantau performa toko dan produk Anda.</p>
                 </div>
             </header>
 
             <main class="flex-1 overflow-y-auto">
-                <div class="max-w-6xl mx-auto p-8 md:p-12 lg:p-16">
-                    <div
-                        class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-xl shadow-gray-200/40 relative mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                        <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left w-full">
+                <div class="max-w-6xl mx-auto p-4 sm:p-6 md:p-10 pb-28 lg:pb-10">
+                    <!-- Profile Card -->
+                    <div class="bg-white p-5 sm:p-8 rounded-3xl border border-gray-100 shadow-sm relative mb-6 sm:mb-10">
+                        <div class="flex items-center gap-4">
                             <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Seller') . '&background=2563eb&color=fff&size=200' }}"
-                                class="w-24 h-24 rounded-[32px] shadow-xl shadow-blue-600/10 border-4 border-white object-cover">
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-lg shadow-blue-600/10 border-2 border-white object-cover shrink-0">
 
-                            <div class="flex-1">
-                                <div class="flex flex-col md:flex-row items-center gap-3 mb-1">
-                                    <h3 class="text-2xl font-extrabold text-gray-900 leading-tight flex items-center gap-1.5">
-                                        {{ Auth::user()->name ?? 'Seller' }}
-                                        @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->status_verifikasi == 'diterima')
-                                        <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                clip-rule="evenodd"></path>
-                                        </svg>
-                                        @endif
-                                    </h3>
-                                </div>
-                                <p class="text-gray-500 font-medium text-sm">{{ Auth::user()->sellerProfile->bidang_keahlian ?? 'Creative Designer' }}</p>
-                                <p class="text-gray-900 font-bold text-sm mt-2 max-w-2xl">
-                                    {{ Auth::user()->sellerProfile->deskripsi ?? 'Membantu kebutuhan publikasi seminar, webinar, organisasi, dan event kampus agar tampil modern.' }}
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-lg sm:text-2xl font-extrabold text-gray-900 flex items-center gap-1.5 flex-wrap">
+                                    {{ Auth::user()->name ?? 'Seller' }}
+                                    @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->status_verifikasi == 'diterima')
+                                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    @endif
+                                </h3>
+                                <p class="text-gray-500 text-xs sm:text-sm mt-0.5">{{ Auth::user()->sellerProfile->bidang_keahlian ?? 'Creative Designer' }}</p>
+                                <p class="text-gray-700 text-xs sm:text-sm mt-2 line-clamp-2">
+                                    {{ Auth::user()->sellerProfile->deskripsi ?? 'Membantu kebutuhan publikasi seminar, webinar, dan event kampus.' }}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-                        <div>
-                            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Jasa & Produk Aktif</h2>
-                        </div>
+                    <div class="flex items-center justify-between mb-4 sm:mb-6">
+                        <h2 class="text-lg sm:text-2xl font-extrabold text-gray-900">Jasa & Produk Aktif</h2>
+                        <a href="{{ route('produk.seller') }}" class="text-xs font-bold text-blue-600 hover:text-blue-700">Kelola →</a>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5">
                         @forelse($produks as $produk)
                         <a href="{{ route('produk.detail', $produk->id) }}"
-                            class="block bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden flex flex-col group hover:border-[#4F46E5]/30 transition-all">
-                            <div class="h-56 overflow-hidden">
+                            class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col group hover:border-blue-200 hover:shadow-md transition-all">
+                            <div class="h-36 sm:h-44 overflow-hidden relative">
                                 <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image' }}"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-2 left-2 text-[10px] font-bold uppercase bg-white/90 text-blue-600 px-2 py-0.5 rounded-lg">
+                                    {{ ucwords(str_replace('-', ' ', $produk->kategori)) }}
+                                </span>
                             </div>
-
-                            <div class="p-8 flex flex-col flex-1">
-                                <div class="mb-4">
-                                    <span
-                                        class="inline-flex items-center justify-center px-4 py-1.5 bg-blue-50 text-blue-600 font-bold text-[11px] uppercase tracking-wider rounded-full">
-                                        {{ ucwords(str_replace('-', ' ', $produk->kategori)) }}
-                                    </span>
-                                </div>
-
-                                <h3
-                                    class="text-xl font-extrabold text-gray-900 leading-tight mb-4 group-hover:text-[#4F46E5] transition-colors">
+                            <div class="p-3 sm:p-5 flex flex-col flex-1">
+                                <h3 class="font-bold text-gray-900 text-xs sm:text-sm leading-tight mb-2 flex-grow line-clamp-2">
                                     {{ $produk->nama_produk }}
                                 </h3>
-
-                                <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-gray-400 text-xs font-medium mb-0.5">Harga mulai dari</p>
-                                        <p class="font-extrabold text-2xl text-[#4F46E5]">Rp{{ number_format($produk->harga, 0, ',', '.') }}</p>
-                                    </div>
+                                <div class="pt-2 border-t border-gray-50">
+                                    <p class="text-gray-400 text-[10px] sm:text-xs">Harga mulai dari</p>
+                                    <p class="font-extrabold text-sm sm:text-base text-indigo-600">Rp{{ number_format($produk->harga, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                         </a>
