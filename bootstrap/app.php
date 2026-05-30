@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // 1. BARIS INI SANGAT WAJIB UNTUK VERCEL (Memaksa HTTPS)
+        $middleware->trustProxies(at: '*');
+
+        // 2. Middleware bawaan Anda
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
