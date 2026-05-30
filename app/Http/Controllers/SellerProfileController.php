@@ -102,7 +102,7 @@ class SellerProfileController extends Controller
     public function updatePhoto(Request $request): RedirectResponse
     {
         $request->validate([
-            'foto' => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'], // Maksimal 2MB, hanya gambar
+            'foto' => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
         ]);
 
         $user = $request->user();
@@ -131,7 +131,6 @@ class SellerProfileController extends Controller
         $user = $request->user();
         $profile = SellerProfile::firstOrCreate(['user_id' => $user->id]);
 
-        // Batasi jumlah portfolio maksimal 10 link
         $currentPortfolio = $profile->link_portofolio ?? [];
         if (count($currentPortfolio) >= 10) {
             return back()->withErrors(['link_karya' => 'Maksimal 10 link portfolio yang diizinkan.']);
