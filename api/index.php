@@ -1,44 +1,35 @@
 <?php
+// Mencegah Vercel mengembalikan status 500
+http_response_code(200);
 
-// 1. Tampilkan semua error ke layar agar tidak ada yang tersembunyi
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+echo "<html><body style='font-family:sans-serif; padding: 30px;'>";
+echo "<h1 style='color:green;'>✅ Jembatan Vercel-PHP Berhasil Menyala!</h1>";
+echo "<p>Jika Anda melihat halaman ini, berarti masalahnya BUKAN pada Vercel, melainkan ada file penting Laravel yang tidak ikut ter-upload atau ter-install.</p>";
+echo "<hr>";
+echo "<h3>Hasil Pemindaian Server:</h3>";
+echo "<ul>";
 
-// 2. Daftar sub-folder yang WAJIB ada agar Laravel tidak crash
-$compiledViewPath = '/tmp/framework/views';
-$cachePath = '/tmp/framework/cache';
-$cacheDataPath = '/tmp/framework/cache/data';
-$sessionPath = '/tmp/framework/sessions';
-$logPath = '/tmp/logs';
+// 1. Cek Versi PHP
+echo "<li><strong>Versi PHP Vercel:</strong> " . phpversion() . "</li>";
 
-$directories = [
-    $compiledViewPath,
-    $cachePath,
-    $cacheDataPath,
-    $sessionPath,
-    $logPath
-];
-
-// 3. Bangun foldernya jika belum ada di server Vercel
-foreach ($directories as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-    }
+// 2. Cek Folder Vendor (Kunci Utama)
+$vendorPath = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($vendorPath)) {
+    echo "<li style='color:green;'><strong>Dependensi Composer (vendor/):</strong> AMAN TERSEDIA</li>";
+} else {
+    echo "<li style='color:red;'><strong>Dependensi Composer (vendor/):</strong> KOSONG / HILANG! (Ini penyebab utama Error 500 Anda!)</li>";
 }
 
-// 4. Pastikan Laravel menggunakan folder view yang baru saja kita buat
-$_ENV['VIEW_COMPILED_PATH'] = $compiledViewPath;
-putenv('VIEW_COMPILED_PATH=' . $compiledViewPath);
-
-// 5. Nyalakan mesin Laravel
-try {
-    require __DIR__ . '/../public/index.php';
-} catch (\Throwable $e) {
-    // Jika masih crash, tampilkan pesan aslinya ke layar putih!
-    echo "<h1 style='color:red;'>🚨 Error Vercel:</h1>";
-    echo "<p><strong>Pesan:</strong> " . $e->getMessage() . "</p>";
-    echo "<p><strong>Lokasi:</strong> " . $e->getFile() . " (Baris: " . $e->getLine() . ")</p>";
-    echo "<hr>";
-    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+// 3. Cek public/index.php
+$publicPath = __DIR__ . '/../public/index.php';
+if (file_exists($publicPath)) {
+    echo "<li style='color:green;'><strong>File public/index.php:</strong> AMAN TERSEDIA</li>";
+} else {
+    echo "<li style='color:red;'><strong>File public/index.php:</strong> HILANG!</li>";
 }
+
+echo "</ul>";
+echo "<hr>";
+echo "<p><em>Tolong beritahu saya apa hasil yang berwarna MERAH di layar Anda.</em></p>";
+echo "</body></html>";
+exit; // Hentikan eksekusi di sini agar Laravel tidak terpanggil
