@@ -1,6 +1,7 @@
 {
     "version": 2,
     "builds": [
+<<<<<<< HEAD
         {
             "src": "api/index.php",
             "use": "vercel-php@0.7.4"
@@ -9,26 +10,14 @@
             "src": "public/**",
             "use": "@vercel/static"
         }
+=======
+        { "src": "api/index.php", "use": "vercel-php@0.7.4" },
+        { "src": "public/**", "use": "@vercel/static" }
+>>>>>>> 0d3e01d98b101f62a56c9c6a3c7c31671008a9e2
     ],
     "routes": [
-        {
-            "src": "/build/(.*)",
-            "dest": "/public/build/$1"
-        },
-        {
-            "src": "/(css|js|images)/(.*)",
-            "dest": "/public/$1/$2"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
-    ],
-    "env": {
-        "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "CACHE_STORE": "array",
-        "SESSION_DRIVER": "cookie",
-        "QUEUE_CONNECTION": "sync"
-    }
+        { "src": "/build/(.*)", "dest": "/public/build/$1" },
+        { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
+        { "src": "/(.*)", "dest": "/api/index.php" }
+    ]
 }

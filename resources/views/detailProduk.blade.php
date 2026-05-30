@@ -24,7 +24,7 @@
                     <span class="font-extrabold text-xl tracking-tight">LOKALKARYA</span>
                 </div>
 
-                <nav class="hidden md:flex space-x-8">
+                <nav class="flex space-x-8">
                     <a href="{{ url('/') }}"
                         class="inline-flex items-center gap-2 text-gray-900 font-medium text-sm transition-colors hover:text-blue-600">
 

@@ -1,10 +1,21 @@
-<aside class="w-72 bg-white border-r border-gray-100 hidden lg:flex flex-col sticky top-0 h-screen">
+<!-- Mobile overlay -->
+<div x-show="sidebarOpen" class="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden" @click="sidebarOpen = false" x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" style="display: none;"></div>
+
+<!-- Sidebar -->
+<aside :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-100 flex flex-col transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 lg:flex h-screen">
     <div class="p-8">
-        <div class="flex items-center gap-3 mb-12">
-            <div
-                class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-blue-600/20">
-                L</div>
-            <span class="font-extrabold text-2xl tracking-tight text-gray-900 uppercase">Lokalkarya</span>
+        <div class="flex items-center justify-between mb-12">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-blue-600/20">
+                    L</div>
+                <span class="font-extrabold text-2xl tracking-tight text-gray-900 uppercase">Lokalkarya</span>
+            </div>
+            <button @click="sidebarOpen = false" class="lg:hidden text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-md">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
         <nav class="space-y-2">

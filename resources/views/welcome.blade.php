@@ -29,7 +29,7 @@
 
 <body class="bg-gray-50 font-sans antialiased text-gray-900">
 
-    <header class="bg-white border-b border-gray-100">
+    <header class="bg-white border-b border-gray-100" x-data="{ mobileMenuOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
@@ -50,7 +50,7 @@
                         class="text-gray-500 hover:text-gray-900 font-medium text-sm transition-colors">Kontak</a>
                 </nav>
 
-                <div class="flex items-center">
+                <div class="hidden md:flex items-center">
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}"
@@ -61,6 +61,38 @@
                         class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all hover:shadow-lg active:scale-95">
                         Mulai Jual Karya
                     </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex md:hidden items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-500 hover:text-gray-900 focus:outline-none p-2">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path x-show="mobileMenuOpen" style="display: none;" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" class="md:hidden border-t border-gray-100 bg-white" style="display: none;" x-transition>
+            <div class="px-4 pt-2 pb-3 space-y-1">
+                <a href="{{ url('/') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 rounded-md">Beranda</a>
+                <a href="#katalog" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md">Katalog</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md">Kategori</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md">Tentang</a>
+                <a href="#footer" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md">Kontak</a>
+            </div>
+            <div class="pt-4 pb-4 border-t border-gray-200">
+                <div class="px-4 space-y-2">
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="block w-full text-center px-4 py-2.5 text-base font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="block w-full text-center px-4 py-2.5 text-base font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm">Mulai Jual Karya</a>
+                        @endauth
+                    @endif
                 </div>
             </div>
         </div>
@@ -82,9 +114,9 @@
         </p>
 
         <form action="{{ route('home') }}" method="GET"
-            class="max-w-2xl mx-auto mb-10 flex items-center bg-white rounded-full border border-gray-200 shadow-sm p-1.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
+            class="max-w-2xl mx-auto mb-10 flex flex-col sm:flex-row items-center bg-white rounded-3xl sm:rounded-full border border-gray-200 shadow-sm p-1.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
 
-            <div class="relative shrink-0">
+            <div class="relative shrink-0 w-full sm:w-auto border-b border-gray-100 sm:border-transparent">
                 <select name="filter_type"
                     class="bg-transparent border-transparent focus:border-transparent focus:ring-0 text-sm text-gray-700 font-bold pl-4 pr-8 py-3 cursor-pointer outline-none w-full appearance-none">
                     <option value="semua" {{ request('filter_type') == 'semua' ? 'selected' : '' }}>Semua</option>
@@ -94,9 +126,9 @@
                 </select>
             </div>
 
-            <div class="w-px h-6 bg-gray-300 mx-2 shrink-0"></div>
+            <div class="hidden sm:block w-px h-6 bg-gray-300 mx-2 shrink-0"></div>
 
-            <div class="relative flex-1 flex items-center">
+            <div class="relative flex-1 flex items-center w-full">
                 <svg class="w-5 h-5 text-gray-400 absolute left-3" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -107,7 +139,7 @@
             </div>
 
             <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md transition-all active:scale-95 shrink-0">
+                class="w-full sm:w-auto mt-2 sm:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md transition-all active:scale-95 shrink-0">
                 Cari
             </button>
         </form>
