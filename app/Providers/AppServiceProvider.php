@@ -18,9 +18,6 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-<<<<<<< HEAD
-
-=======
     // public function boot(): void
     // {
     //     // 2. Paksa HTTPS jika aplikasi berjalan di server Vercel
@@ -28,7 +25,6 @@ class AppServiceProvider extends ServiceProvider
     //         URL::forceScheme('https');
     //     }
     // }
->>>>>>> d2ef46ab370f1693f4436f1c3ad7239ab1c3edb3
     public function boot(): void
     {
         // Paksa HTTPS HANYA jika server mendeteksi Vercel
