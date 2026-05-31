@@ -20,9 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Paksa HTTPS jika server mendeteksi Vercel ATAU berjalan di production (seperti Railway)
-        if (isset($_SERVER['VERCEL']) || config('app.env') === 'production') {
-            URL::forceScheme('https');
-        }
+        // if (isset($_SERVER['VERCEL']) || config('app.env') === 'production') {
+        //     URL::forceScheme('https');
+        // }
     }
 }

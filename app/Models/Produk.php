@@ -14,6 +14,7 @@ class Produk extends Model
         'deskripsi',
         'kategori',
         'status',
+        'status_verifikasi',
     ];
 
     // Field sensitif yang TIDAK BOLEH diubah oleh Seller via mass assignment
